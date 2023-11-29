@@ -48,7 +48,7 @@ function searchLocation() {
     const searchInput = document.getElementById('search-location').value;
 
     // Use Geocode API to get latitude and longitude for the searched location
-    fetch(`https://geocode.xyz/${searchInput}?json=1`)
+    fetch('https://geocode.maps.co/search?q={address}')
         .then(response => response.json())
         .then(data => {
             const latitude = data.latt;
@@ -63,7 +63,7 @@ function searchLocation() {
 
 function getSunriseSunsetData(latitude, longitude) {
     // Use Sunrise Sunset API to get data
-    fetch(`https://api.sunrise-sunset.org/json?lat=${latitude}&lng=${longitude}&formatted=0`)
+    fetch(`https://api.sunrisesunset.io/json?lat=38.907192&lng=-77.036873`)
         .then(response => response.json())
         .then(data => {
             // Clear previous dashboard content
