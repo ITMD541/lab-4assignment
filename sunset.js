@@ -47,10 +47,24 @@ function errorCallback(error) {
 function searchLocation() {
     const searchInput = document.getElementById('search-location').value;
 
+    if (!searchInput) {
+        showError('Please enter a location.');
+        return;
+    }
+
     // Use Geocode API to get latitude and longitude for the searched location
-    fetch('https://geocode.maps.co/search?q={address}')
-        .then(response => response.json())
+    fetch(`https://geocode.xyz/${encodeURIComponent(searchInput)}?json=1`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Geocoding error: Unable to fetch location data.');
+            }
+            return response.json();
+        })
         .then(data => {
+            if (data.error) {
+                throw new Error(`Geocoding error: ${data.error.description}`);
+            }
+
             const latitude = data.latt;
             const longitude = data.longt;
 
@@ -60,6 +74,7 @@ function searchLocation() {
             showError(`Error searching for location: ${error.message}`);
         });
 }
+
 
 function getSunriseSunsetData(latitude, longitude) {
     // Use Sunrise Sunset API to get data
