@@ -1,5 +1,3 @@
-// script.js
-
 document.addEventListener('DOMContentLoaded', function () {
     if ('geolocation' in navigator) {
         document.getElementById('current-location').addEventListener('click', getCurrentLocation);
@@ -8,10 +6,14 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     document.getElementById('search-button').addEventListener('click', searchLocation);
+    document.getElementById('named-locations').addEventListener('change', function () {
+        const selectedLocation = this.value;
+        getSunriseSunsetData(selectedLocation);
+    });
 });
 
 function getCurrentLocation() {
-    navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
+    navigator.geolocation.getCurrentPosition(successCallback, errorCallback, { timeout: 5000 });
 }
 
 function successCallback(position) {
@@ -22,7 +24,24 @@ function successCallback(position) {
 }
 
 function errorCallback(error) {
-    showError(`Error getting current location: ${error.message}`);
+    let errorMessage = 'Error getting current location.';
+
+    switch (error.code) {
+        case error.PERMISSION_DENIED:
+            errorMessage += ' User denied the request for Geolocation.';
+            break;
+        case error.POSITION_UNAVAILABLE:
+            errorMessage += ' Location information is unavailable.';
+            break;
+        case error.TIMEOUT:
+            errorMessage += ' The request to get user location timed out.';
+            break;
+        case error.UNKNOWN_ERROR:
+            errorMessage += ' An unknown error occurred.';
+            break;
+    }
+
+    showError(errorMessage);
 }
 
 function searchLocation() {
@@ -42,67 +61,42 @@ function searchLocation() {
         });
 }
 
-function getSunriseSunsetData(location) {
-    // Use Geocode API to get latitude and longitude for the selected location
-    fetch(`https://geocode.xyz/${location}?json=1`)
+function getSunriseSunsetData(latitude, longitude) {
+    // Use Sunrise Sunset API to get data
+    fetch(`https://api.sunrise-sunset.org/json?lat=${latitude}&lng=${longitude}&formatted=0`)
         .then(response => response.json())
         .then(data => {
-            const latitude = data.latt;
-            const longitude = data.longt;
+            // Clear previous dashboard content
+            clearDashboard();
 
-            // Use Sunrise Sunset API to get data
-            fetch(`https://api.sunrise-sunset.org/json?lat=${latitude}&lng=${longitude}&formatted=0`)
-                .then(response => response.json())
-                .then(data => {
-                    // Clear previous dashboard content
-                    clearDashboard();
-
-                    // Update the dashboard with the received data
-                    updateDashboard(data);
-                })
-                .catch(error => {
-                    showError(`Error fetching sunrise/sunset data: ${error.message}`);
-                });
+            // Update the dashboard with the received data
+            updateDashboard(data);
         })
         .catch(error => {
-            showError(`Error searching for location: ${error.message}`);
+            showError(`Error fetching sunrise/sunset data: ${error.message}`);
         });
 }
 
-
 function clearDashboard() {
-    const dashboardElement = document.getElementById('dashboard');
+    const dashboardElement = document.getElementById('dashboard-content');
     dashboardElement.innerHTML = ''; // Clear previous content
 }
 
 function updateDashboard(data) {
-    const dashboardContent = document.getElementById('dashboard-content');
-
-    // Use the current date and time
-    const currentDate = new Date();
-    const todaySunrise = new Date(data.results.sunrise);
-    const todaySunset = new Date(data.results.sunset);
-
+    const dashboardElement = document.getElementById('dashboard-content');
+    
     // Create and append new sections for each piece of information
-    createDashboardSection('Sunrise Today', convertUtcToLocalTime(todaySunrise, 'America/New_York'));
-    createDashboardSection('Sunset Today', convertUtcToLocalTime(todaySunset, 'America/New_York'));
-    createDashboardSection('Dawn Today', convertUtcToLocalTime(new Date(data.results.civil_twilight_begin), 'America/New_York'));
-    createDashboardSection('Dusk Today', convertUtcToLocalTime(new Date(data.results.civil_twilight_end), 'America/New_York'));
+    createDashboardSection('Sunrise Today', convertUtcToLocalTime(data.results.sunrise, 'America/New_York'));
+    createDashboardSection('Sunset Today', convertUtcToLocalTime(data.results.sunset, 'America/New_York'));
+    createDashboardSection('Dawn Today', convertUtcToLocalTime(data.results.civil_twilight_begin, 'America/New_York'));
+    createDashboardSection('Dusk Today', convertUtcToLocalTime(data.results.civil_twilight_end, 'America/New_York'));
     createDashboardSection('Day Length Today', secondsToHms(data.results.day_length));
-    createDashboardSection('Solar Noon Today', convertUtcToLocalTime(new Date(data.results.solar_noon), 'America/New_York'));
+    createDashboardSection('Solar Noon Today', convertUtcToLocalTime(data.results.solar_noon, 'America/New_York'));
     createDashboardSection('Time Zone', 'America/New_York');
 }
-// Update the dashboard every minute (adjust the interval as needed)
-setInterval(() => {
-    const selectedLocation = document.getElementById('named-locations').value;
-    if (selectedLocation) {
-        getSunriseSunsetData(selectedLocation);
-    }
-}, 60000); // 60000 milliseconds = 1 minute
-
 
 function createDashboardSection(title, content) {
-    const dashboardElement = document.getElementById('dashboard');
+    const dashboardElement = document.getElementById('dashboard-content');
 
     const section = document.createElement('div');
     section.classList.add('dashboard-section');
@@ -117,8 +111,6 @@ function convertUtcToLocalTime(utcTime, timeZone) {
     const options = { timeZone, hour12: true, hour: 'numeric', minute: 'numeric', second: 'numeric' };
     return localTime.toLocaleTimeString('en-US', options);
 }
-
-
 
 function secondsToHms(seconds) {
     const h = Math.floor(seconds / 3600);
@@ -138,3 +130,4 @@ function hideError() {
     errorMessage.innerText = '';
     errorMessage.classList.add('hidden');
 }
+
