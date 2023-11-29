@@ -49,7 +49,7 @@ function searchLocation() {
     }
 
     // Use Geocode API to get latitude and longitude for the searched location
-    fetch(`https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(searchInput)}&key=YOUR_OPENCAGE_API_KEY`)
+    fetch(`https://geocode.maps.co/search?q=searchInput`)
         .then(response => response.json())
         .then(data => {
             if (data.results && data.results.length > 0) {
@@ -68,7 +68,7 @@ function searchLocation() {
 
 function getSunriseSunsetData(latitude, longitude) {
     // Use Sunrise Sunset API to get data
-    fetch(`https://api.sunrise-sunset.org/json?lat=${latitude}&lng=${longitude}&formatted=0`)
+    fetch(`https://api.sunrisesunset.io/json?lat=38.907192&lng=-77.036873`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Error: ${response.status} - ${response.statusText}`);
