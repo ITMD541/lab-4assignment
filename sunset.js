@@ -53,7 +53,7 @@ function searchLocation() {
     }
 
     // Use Geocode API to get latitude and longitude for the searched location
-    fetch(`https://geocode.xyz/${encodeURIComponent(searchInput)}?json=1`)
+    fetch(`https://geocode.maps.co/search?q={address}`)
         .then(response => {
             if (!response.ok) {
                 throw new Error('Geocoding error: Unable to fetch location data.');
