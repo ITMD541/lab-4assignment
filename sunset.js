@@ -72,7 +72,7 @@ function searchLocation() {
 
 function getSunriseSunsetData(latitude, longitude) {
     // Use Sunrise Sunset API to get data
-    fetch(`https://api.sunrisesunset.io/json?lat=${latitude}&lng=${longitude}`)
+    fetch(`https://sunrisesunset.io/us/illinois/chicago/`)
         .then(response => response.json())
         .then(data => {
             // Clear previous dashboard content
