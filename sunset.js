@@ -6,10 +6,6 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     document.getElementById('search-button').addEventListener('click', searchLocation);
-    document.getElementById('named-locations').addEventListener('change', function () {
-        const selectedLocation = this.value;
-        getSunriseSunsetData(selectedLocation);
-    });
 });
 
 function getCurrentLocation() {
@@ -53,17 +49,17 @@ function searchLocation() {
     }
 
     // Use Geocode API to get latitude and longitude for the searched location
-    fetch(`https://geocode.maps.co/search?q=${searchInput}`)
+    fetch(`https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(searchInput)}&key=YOUR_OPENCAGE_API_KEY`)
         .then(response => response.json())
         .then(data => {
-            if (data.error) {
-                throw new Error(`Geocoding error: ${data.error.description}`);
+            if (data.results && data.results.length > 0) {
+                const latitude = data.results[0].geometry.lat;
+                const longitude = data.results[0].geometry.lng;
+
+                getSunriseSunsetData(latitude, longitude);
+            } else {
+                showError('Location not found.');
             }
-
-            const latitude = data.latt;
-            const longitude = data.longt;
-
-            getSunriseSunsetData(latitude, longitude);
         })
         .catch(error => {
             showError(`Error searching for location: ${error.message}`);
@@ -72,8 +68,13 @@ function searchLocation() {
 
 function getSunriseSunsetData(latitude, longitude) {
     // Use Sunrise Sunset API to get data
-    fetch(`https://api.sunrise-sunset.org/json?lat=36.7201600&lng=-4.4203400&callback=mycallback`)
-        .then(response => response.json())
+    fetch(`https://api.sunrise-sunset.org/json?lat=${latitude}&lng=${longitude}&formatted=0`)
+        .then(response => {
+            if (!response.ok) {
+                throw new Error(`Error: ${response.status} - ${response.statusText}`);
+            }
+            return response.json();
+        })
         .then(data => {
             // Clear previous dashboard content
             clearDashboard();
@@ -85,6 +86,8 @@ function getSunriseSunsetData(latitude, longitude) {
             showError(`Error fetching sunrise/sunset data: ${error.message}`);
         });
 }
+
+// ... (rest of the code remains the same)
 
 function clearDashboard() {
     const dashboardElement = document.getElementById('dashboard-content');
