@@ -53,13 +53,8 @@ function searchLocation() {
     }
 
     // Use Geocode API to get latitude and longitude for the searched location
-    fetch(`https://geocode.maps.co/search?q={address}`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Geocoding error: Unable to fetch location data.');
-            }
-            return response.json();
-        })
+    fetch(`https://geocode.maps.co/search?q=${searchInput}`)
+        .then(response => response.json())
         .then(data => {
             if (data.error) {
                 throw new Error(`Geocoding error: ${data.error.description}`);
@@ -75,10 +70,9 @@ function searchLocation() {
         });
 }
 
-
 function getSunriseSunsetData(latitude, longitude) {
     // Use Sunrise Sunset API to get data
-    fetch(`https://api.sunrisesunset.io/json?lat=38.907192&lng=-77.036873`)
+    fetch(`https://api.sunrisesunset.io/json?lat=${latitude}&lng=${longitude}`)
         .then(response => response.json())
         .then(data => {
             // Clear previous dashboard content
@@ -101,13 +95,13 @@ function updateDashboard(data) {
     const dashboardElement = document.getElementById('dashboard-content');
     
     // Create and append new sections for each piece of information
-    createDashboardSection('Sunrise Today', convertUtcToLocalTime(data.results.sunrise, 'America/New_York'));
-    createDashboardSection('Sunset Today', convertUtcToLocalTime(data.results.sunset, 'America/New_York'));
-    createDashboardSection('Dawn Today', convertUtcToLocalTime(data.results.civil_twilight_begin, 'America/New_York'));
-    createDashboardSection('Dusk Today', convertUtcToLocalTime(data.results.civil_twilight_end, 'America/New_York'));
+    createDashboardSection('Sunrise Today', convertUtcToLocalTime(data.results.sunrise, data.results.timezone));
+    createDashboardSection('Sunset Today', convertUtcToLocalTime(data.results.sunset, data.results.timezone));
+    createDashboardSection('Dawn Today', convertUtcToLocalTime(data.results.civil_twilight_begin, data.results.timezone));
+    createDashboardSection('Dusk Today', convertUtcToLocalTime(data.results.civil_twilight_end, data.results.timezone));
     createDashboardSection('Day Length Today', secondsToHms(data.results.day_length));
-    createDashboardSection('Solar Noon Today', convertUtcToLocalTime(data.results.solar_noon, 'America/New_York'));
-    createDashboardSection('Time Zone', 'America/New_York');
+    createDashboardSection('Solar Noon Today', convertUtcToLocalTime(data.results.solar_noon, data.results.timezone));
+    createDashboardSection('Time Zone', data.results.timezone);
 }
 
 function createDashboardSection(title, content) {
@@ -145,4 +139,3 @@ function hideError() {
     errorMessage.innerText = '';
     errorMessage.classList.add('hidden');
 }
-
