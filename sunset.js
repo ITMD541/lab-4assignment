@@ -26,7 +26,7 @@ function errorCallback(error) {
 function searchLocation() {
     const searchInput = document.getElementById('search-location').value;
 
-    fetch(`https://geocode.xyz/${searchInput}?json=1`)
+    fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=${apiKey}`)
         .then(response => response.json())
         .then(data => {
             const latitude = data.latt;
