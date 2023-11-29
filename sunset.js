@@ -68,7 +68,7 @@ function searchLocation() {
 
 function getSunriseSunsetData(latitude, longitude) {
     // Use Sunrise Sunset API to get data
-    fetch(`https://sunrisesunset.io/us/new-york/new-york-city/`)
+    fetch(`https://api.sunrisesunset.io/json?lat=38.907192&lng=-77.036873`)
         .then(response => {
             if (!response.ok) {
                 throw new Error(`Error: ${response.status} - ${response.statusText}`);
