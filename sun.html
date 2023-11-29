@@ -1,0 +1,48 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="set.css">
+    <title>Sunrise Sunset Dashboard</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Sunrise Sunset Dashboard</h1>
+        
+        <div id="location-options">
+            <button onclick="getCurrentLocation()">Get Current Location</button>
+            
+           
+<select id="named-locations">
+    <option value="New York">New York</option>
+    <option value="California">California</option>
+    <!-- Add more states as needed -->
+    <option value="Alabama">Alabama</option>
+    <option value="Alaska">Alaska</option>
+    <option value="Arizona">Arizona</option>
+    <!-- Include all 50 states -->
+</select>
+
+            
+            <input type="text" id="search-location" placeholder="Enter location">
+            <button onclick="searchLocation()">Search</button>
+        </div>
+
+        <div id="dashboard">
+            <!-- Data will be displayed here -->
+        </div>
+
+        <div id="error-message" class="hidden">
+            <!-- Error messages will be displayed here -->
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <script src="sunset.js"></script>
+    
+
+
+</body>
+</html>
