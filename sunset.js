@@ -94,15 +94,31 @@ function clearDashboard() {
 function updateDashboard(data) {
     const dashboardElement = document.getElementById('dashboard-content');
     
-    // Create and append new sections for each piece of information
-    createDashboardSection('Sunrise Today', convertUtcToLocalTime(data.results.sunrise, data.results.timezone));
-    createDashboardSection('Sunset Today', convertUtcToLocalTime(data.results.sunset, data.results.timezone));
-    createDashboardSection('Dawn Today', convertUtcToLocalTime(data.results.civil_twilight_begin, data.results.timezone));
-    createDashboardSection('Dusk Today', convertUtcToLocalTime(data.results.civil_twilight_end, data.results.timezone));
-    createDashboardSection('Day Length Today', secondsToHms(data.results.day_length));
-    createDashboardSection('Solar Noon Today', convertUtcToLocalTime(data.results.solar_noon, data.results.timezone));
-    createDashboardSection('Time Zone', data.results.timezone);
+    if (!data.results) {
+        showError('Invalid data received from the API.');
+        return;
+    }
+
+    // Check for the presence of required fields
+    const { sunrise, sunset, civil_twilight_begin, civil_twilight_end, day_length, solar_noon, timezone } = data.results;
+    if (!sunrise || !sunset || !civil_twilight_begin || !civil_twilight_end || !day_length || !solar_noon || !timezone) {
+        showError('Invalid data received from the API.');
+        return;
+    }
+
+    // Clear previous dashboard content
+    clearDashboard();
+
+    // Update the dashboard with the received data
+    createDashboardSection('Sunrise Today', convertUtcToLocalTime(sunrise, timezone));
+    createDashboardSection('Sunset Today', convertUtcToLocalTime(sunset, timezone));
+    createDashboardSection('Dawn Today', convertUtcToLocalTime(civil_twilight_begin, timezone));
+    createDashboardSection('Dusk Today', convertUtcToLocalTime(civil_twilight_end, timezone));
+    createDashboardSection('Day Length Today', secondsToHms(day_length));
+    createDashboardSection('Solar Noon Today', convertUtcToLocalTime(solar_noon, timezone));
+    createDashboardSection('Time Zone', timezone);
 }
+
 
 function createDashboardSection(title, content) {
     const dashboardElement = document.getElementById('dashboard-content');
