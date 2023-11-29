@@ -9,7 +9,7 @@ document.addEventListener('DOMContentLoaded', function () {
 });
 
 function getCurrentLocation() {
-    navigator.geolocation.getCurrentPosition(successCallback, errorCallback, { timeout: 5000 });
+    navigator.geolocation.getCurrentPosition(successCallback, errorCallback);
 }
 
 function successCallback(position) {
@@ -20,116 +20,82 @@ function successCallback(position) {
 }
 
 function errorCallback(error) {
-    let errorMessage = 'Error getting current location.';
-
-    switch (error.code) {
-        case error.PERMISSION_DENIED:
-            errorMessage += ' User denied the request for Geolocation.';
-            break;
-        case error.POSITION_UNAVAILABLE:
-            errorMessage += ' Location information is unavailable.';
-            break;
-        case error.TIMEOUT:
-            errorMessage += ' The request to get user location timed out.';
-            break;
-        case error.UNKNOWN_ERROR:
-            errorMessage += ' An unknown error occurred.';
-            break;
-    }
-
-    showError(errorMessage);
+    showError(`Error getting current location: ${error.message}`);
 }
 
 function searchLocation() {
     const searchInput = document.getElementById('search-location').value;
 
-    if (!searchInput) {
-        showError('Please enter a location.');
-        return;
-    }
-
-    // Use Geocode API to get latitude and longitude for the searched location
-    fetch(`https://geocode.maps.co/search?q=searchInput`)
+    fetch(`https://geocode.xyz/${searchInput}?json=1`)
         .then(response => response.json())
         .then(data => {
-            if (data.results && data.results.length > 0) {
-                const latitude = data.results[0].geometry.lat;
-                const longitude = data.results[0].geometry.lng;
+            const latitude = data.latt;
+            const longitude = data.longt;
 
-                getSunriseSunsetData(latitude, longitude);
-            } else {
-                showError('Location not found.');
-            }
+            getSunriseSunsetData(latitude, longitude);
         })
         .catch(error => {
             showError(`Error searching for location: ${error.message}`);
         });
 }
 
-function getSunriseSunsetData(latitude, longitude) {
-    // Use Sunrise Sunset API to get data
-    fetch(`https://api.sunrisesunset.io/json?lat=38.907192&lng=-77.036873&timezone=UTC&date=1990-05-22`)
-        .then(response => {
-            if (!response.ok) {
-                throw new Error(`Error: ${response.status} - ${response.statusText}`);
-            }
-            return response.json();
-        })
+function getSunriseSunsetData(location) {
+    const apiKey = 'AIzaSyBwAMKFRjZPRybeLrNOIHX9NrAK-U2l7vo'
+    fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${location}&key=${apiKey}`)
+        .then(response => response.json())
         .then(data => {
-            // Clear previous dashboard content
-            clearDashboard();
+            const latitude = data.latt;
+            const longitude = data.longt;
 
-            // Update the dashboard with the received data
-            updateDashboard(data);
+            fetch(`https://api.sunrise-sunset.org/json?lat=${latitude}&lng=${longitude}&formatted=0`)
+                .then(response => response.json())
+                .then(data => {
+                    clearDashboard();
+                    updateDashboard(data);
+                })
+                .catch(error => {
+                    showError(`Error fetching sunrise/sunset data: ${error.message}`);
+                });
         })
         .catch(error => {
-            showError(`Error fetching sunrise/sunset data: ${error.message}`);
+            showError(`Error searching for location: ${error.message}`);
         });
 }
 
-
 function clearDashboard() {
-    const dashboardElement = document.getElementById('dashboard-content');
-    dashboardElement.innerHTML = ''; // Clear previous content
+    const dashboardElement = document.getElementById('dashboard');
+    dashboardElement.innerHTML = '';
 }
 
 function updateDashboard(data) {
-    const dashboardElement = document.getElementById('dashboard-content');
-    
-    if (!data.results) {
-        showError('Invalid data received from the API.');
-        return;
-    }
+    const dashboardContent = document.getElementById('dashboard-content');
+    const currentDate = new Date();
+    const todaySunrise = new Date(data.results.sunrise);
+    const todaySunset = new Date(data.results.sunset);
 
-    // Check for the presence of required fields
-    const { sunrise, sunset, civil_twilight_begin, civil_twilight_end, day_length, solar_noon, timezone } = data.results;
-    if (!sunrise || !sunset || !civil_twilight_begin || !civil_twilight_end || !day_length || !solar_noon || !timezone) {
-        showError('Invalid data received from the API.');
-        return;
-    }
-
-    // Clear previous dashboard content
-    clearDashboard();
-
-    // Update the dashboard with the received data
-    createDashboardSection('Sunrise Today', convertUtcToLocalTime(sunrise, timezone));
-    createDashboardSection('Sunset Today', convertUtcToLocalTime(sunset, timezone));
-    createDashboardSection('Dawn Today', convertUtcToLocalTime(civil_twilight_begin, timezone));
-    createDashboardSection('Dusk Today', convertUtcToLocalTime(civil_twilight_end, timezone));
-    createDashboardSection('Day Length Today', secondsToHms(day_length));
-    createDashboardSection('Solar Noon Today', convertUtcToLocalTime(solar_noon, timezone));
-    createDashboardSection('Time Zone', timezone);
+    createDashboardSection('Sunrise Today', convertUtcToLocalTime(todaySunrise, 'America/New_York'));
+    createDashboardSection('Sunset Today', convertUtcToLocalTime(todaySunset, 'America/New_York'));
+    createDashboardSection('Dawn Today', convertUtcToLocalTime(new Date(data.results.civil_twilight_begin), 'America/New_York'));
+    createDashboardSection('Dusk Today', convertUtcToLocalTime(new Date(data.results.civil_twilight_end), 'America/New_York'));
+    createDashboardSection('Day Length Today', secondsToHms(data.results.day_length));
+    createDashboardSection('Solar Noon Today', convertUtcToLocalTime(new Date(data.results.solar_noon), 'America/New_York'));
+    createDashboardSection('Time Zone', 'America/New_York');
 }
 
+setInterval(() => {
+    const selectedLocation = document.getElementById('named-locations').value;
+    if (selectedLocation) {
+        getSunriseSunsetData(selectedLocation);
+    }
+}, 60000);
 
 function createDashboardSection(title, content) {
-    const dashboardElement = document.getElementById('dashboard-content');
+    const dashboardElement = document.getElementById('dashboard');
 
     const section = document.createElement('div');
     section.classList.add('dashboard-section');
     section.innerHTML = `<h2>${title}</h2><p>${content}</p>`;
 
-    // Append the new section at the beginning of the dashboard
     dashboardElement.insertBefore(section, dashboardElement.firstChild);
 }
 
