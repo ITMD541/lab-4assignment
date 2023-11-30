@@ -1,48 +1,130 @@
-<!-- index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="set.css">
-    <title>Sunrise Sunset Dashboard</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sunrise & Sunset</title>
+    <link rel="stylesheet" href="set.css" />
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+        integrity="sha512-z3gLpd7yknf1YoNbCzqRKc4qyor8gaKU1qmn+CShxbuBusANI9QpRohGBreCFkKxLhei6S9CQXFEbbKuqLg0DA=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    />
 </head>
 <body>
-    <div id="dashboard-content"></div>
-    <div class="container">
-        <h1>Sunrise Sunset Dashboard</h1>
-        
-        <div id="location-options">
-            <button onclick="getCurrentLocation()">Get Current Location</button>
-            
-           
-<select id="named-locations">
-    <option value="New York">New York</option>
-    <option value="California">California</option>
-    <option value="Chicago">Chicago</option> 
-    <option value="Dallas">Dallas</option> 
-    
-</select>
+    <div>
+        <nav class="nav-header">
+            <div class="nav-content">
+                <div class="nav-bar-mobile-logo-container">
+                    <a href="#">
+                        <img
+                            class="website-logo"
+                            src=".\images\logo.jpg"
+                            alt="website logo"
+                        />
+                    </a>
+                    <button type="button" class="nav-mobile-btn" id="menuBtn">
+                        <span id="hambargBtn"><i class="fa-solid fa-bars"></i></span>
+                        <span class="cancel-btn" id="cancelBtn"
+                            ><i class="fa-solid fa-xmark"></i
+                        ></span>
+                    </button>
+                </div>
+                <div class="nav-bar-large-container">
+                    <a href="#">
+                        <img
+                            class="website-logo"
+                            src=".\images\logo.jpg"
+                            alt="website logo"
+                        />
+                    </a>
+                    <ul class="nav-menu">
+                        <li class="nav-menu-item">
+                            <a href="#" class="nav-link" id="Detect my location">
+                                Detect my location
+                            </a>
+                        </li>
+                    </ul>
+                    <li class="nav-menu-item">
+                        <a href="#" class="nav-link" id="newYorkLink">New York</a>
+                    </li>
+                    <li class="nav-menu-item">
+                        <a href="#" class="nav-link" id="newJerseyLink">New Jersey</a>
+                    </li>
+                    <li class="nav-menu-item">
+                        <a href="#" class="nav-link" id="ukLink">United Kingdom</a>
+                    </li>
+                    <li class="nav-menu-item">
+                        <a href="#" class="nav-link" id="californiaLink">California</a>
+                    </li>
 
+                    <li class="nav-menu-item">
+                        <a href="#" class="nav-link" id="additionalLocationLink">Additional Location</a>
+                    </li>
 
-            
-            <input type="text" id="search-location" placeholder="Enter location">
-            <button onclick="searchLocation()">Search</button>
+                </div>
+            </div>
+            <div class="nav-menu-mobile-width nav-menu-mobile" id="navMenuMobile">
+                <ul class="nav-menu-list-mobile">
+                    <li class="nav-menu-item-mobile" id="mobileFindMyLocation">
+                        <a href="#" class="nav-link"> FIND MY LOCATION </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="search-bg-container">
+            <div class="search-container">
+
+                <h1 class="welcome-heading">SunriseSunset Insights
+
+                </h1>
+                <p class="welcome-description">
+                    Discover the Day's Canvas: SunriseSunset Insights Unveiled
+                </p>
+                <input
+                    type="search"
+                    name="search"
+                    class="search-box"
+                    placeholder="Look up sunrise & sunset in your city"
+                    value=""
+                    id="searchField"
+                />
+                <button type="button" class="search-btn" id="searchButton">
+                    Search
+                </button>
+                <br />
+                <button
+                    type="button"
+                    class="find-my-location-btn"
+                    id="findMyLocationBtn"
+                >
+                    Detect my location
+                </button>
+            </div>
         </div>
 
-        <div id="dashboard">
-            <!-- Data will be displayed here -->
-        </div>
+        <div class="content-bg-container" id="contentContainer">
+            <div class="sun-details-container">
 
-        <div id="error-message" class="hidden">
-            <!-- Error messages will be displayed here -->
-        </div>
-    </div>
+                <h4 class="content-heading">
 
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script src="sunset.js"></script>
-    
+                    Scroll Down for more!
+                    <p>
+
+                        Sunrise and sunset are like the beautiful bookends of the day, signifying the shift from night to day with a colorful sky. They play a significant role in our lives, marking the beginning and end of each day.
+
+                    </h4>
+                </p>
 
 
-</body>
-</html>
+                <footer class="footer-container" id="footer">
+                    <p class="copy-right-description">
+                        copy rights &copy; SunriseSunset Insights | All Rights Reserved
+                    </p>
+                </footer>
+            </div>
+            <script src="sunset.js"></script>
+        </body>
+        </html>
