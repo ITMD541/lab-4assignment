@@ -1,76 +1,593 @@
-body {
-    font-family: 'Arial', sans-serif;
+/* Reset some default styles for better consistency */
+* {
     margin: 0;
     padding: 0;
-    background-color: #f8f8f8;
+    box-sizing: border-box;
+  }
+  /* Header Styles with Gradient Background */
+.nav-header {
+    display: flex;
+    justify-content: center;
+    background: linear-gradient(to right, #3498db, #2ecc71); /* Gradient from light blue to green */
+    border-bottom: 1px solid rgb(243, 243, 243);
+    padding: 10px 0; /* Adjusted padding for better spacing */
+    font-family: cursive; /* Set font style to cursive */
+    color: white; /* Set font color to white */
 }
 
-#dashboard {
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    background-color: #fff;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  
+  /* Navigation Content Styles */
+  .nav-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    max-width: 1110px;
+    margin: 0 auto; /* Centering the content */
+  }
+  
+  /* Navigation Bar Styles for Mobile */
+  .nav-bar-mobile-logo-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+  }
+  
+  /* Hide Mobile Navigation on Larger Screens */
+  @media screen and (min-width: 768px) {
+    .nav-bar-mobile-logo-container {
+      display: none;
+    }
+  }
+  
+  /* Navigation Bar Styles for Larger Screens */
+  .nav-bar-large-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 1110px;
+  }
+  
+  /* Website Logo Styles */
+  .website-logo {
+    width: 120px;
+    height: auto; /* Allowing the height to adjust proportionally */
+  }
+  
+  /* Navigation Menu Styles */
+  .nav-menu {
+    display: flex;
+    justify-content: flex-end;
+    list-style-type: none;
+    margin: 0; /* Resetting margin */
+  }
+  
+  /* Style for each navigation item */
+  .nav-menu-item {
+    margin-left: 20px; /* Adjusted margin for better spacing */
+  }
+  
+  /* Responsive Styles for Mobile */
+  @media screen and (max-width: 768px) {
+    .nav-content {
+      flex-direction: column;
+    }
+  
+    .nav-menu {
+      margin-top: 10px; /* Adding margin for better spacing */
+    }
+  
+    .nav-menu-item {
+      margin: 10px 0; /* Adding margin for better spacing */
+    }
+  }
+  /* Mobile Navigation Styles */
+  @media screen and (max-width: 767px) {
+    .nav-menu {
+      display: none;
+    }
+  
+    .nav-menu-mobile-width {
+      width: 80%;
+    }
+  
+    .nav-menu-mobile {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .nav-menu-list-mobile {
+      list-style-type: none;
+      padding: 0;
+      margin: 0;
+    }
+  
+    .nav-menu-item {
+      margin: 10px;
+    }
+  
+    .nav-link {
+      font-size: 12px;
+    }
+  
+    .nav-mobile-btn-container {
+      display: flex;
+      justify-content: flex-end;
+      width: 100%;
+      margin-top: 10px; /* Adjusted margin for better spacing */
+    }
+  
+    .nav-mobile-btn {
+      border: none;
+      padding: 5px;
+      background: transparent;
+      cursor: pointer;
+      outline: none;
+      color: #eea65a;
+      font-size: 20px;
+    }
+  
+    .nav-bar-image {
+      display: none; /* Hide the image in mobile view */
+    }
+  
+    .hambarge-bars {
+      display: inline-block; /* Show the bars in mobile view */
+      color: #fff;
+    }
+  
+    .hambar-btn {
+      display: block; /* Show the hamburger button */
+    }
+  
+    .cancel-btn {
+      display: none;
+    }
+  }
+  
+  /* Larger Screens Navigation Styles */
+  @media screen and (min-width: 768px) {
+    .nav-menu-mobile {
+      display: none;
+    }
+  
+    .nav-mobile-btn {
+      display: none;
+    }
+  }
+  /*######################## Search container Styles ####################*/
+  
+  .search-bg-container {
+    background-size: cover;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+  
+    /* Adjusted styles for better responsiveness */
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+  }
+  
+  @media screen and (min-width: 768px) {
+    .search-bg-container {
+      height: 75vh;
+    }
+  }
+  
+  .search-container {
+    margin-left: 8%;
+  
+    /* Adjusted styles for better spacing */
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+  
+  .welcome-heading {
+    margin: 0px;
+    font-weight: 900;
+    font-size: 2.5rem;
+    color: rgb(15, 15, 15);
+    font-family: "Courier New", Courier, monospace;
+  
+    /* Adjusted styles for better responsiveness */
+    margin-top: 10px;
+    font-size: 2.1rem;
+    color: rgb(138, 134, 220);
+  }
+  
+  .welcome-description {
+    margin: 10px 0px 4px;
+    font-size: 14px;
+    color: rgb(138, 134, 170);
+    font-style: italic;
+    font-weight: 500;
+  
+    /* Adjusted styles for better responsiveness */
+    font-size: 11px;
+    color: rgb(146, 152, 226);
+  }
+  /* Search container background with image */
+.search-bg-container {
+    background-image: url('./images/sai.jpg'); /* Adjust the path based on your file structure */
+    background-size: cover; /* This will cover the entire container, maintaining the aspect ratio */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+
+    /* Adjusted styles for better responsiveness */
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 
-.hidden {
-    display: none;
+/* Content container background with image */
+.content-bg-container {
+    background-image: url(''); /* Adjust the path based on your file structure */
+    background-size: cover; /* This will cover the entire container, maintaining the aspect ratio */
+    background-position: center; /* Center the background image */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+    /* Adjusted padding for better spacing */
+    padding: 1rem;
 }
 
-h1 {
-    text-align: center;
-    color: #333;
-}
-
-button, select, input {
+  
+  .search-box {
     padding: 10px;
-    margin: 5px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-button {
-    background-color: #4CAF50;
-    color: #fff;
-}
-
-button:hover {
-    background-color: #45a049;
-}
-
-select, input {
     width: 70%;
-}
-
-#dashboard-content {
-    margin-top: 20px;
-}
-
-.dashboard-section {
-    background-color: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-.dashboard-section h2 {
-    margin-bottom: 10px;
-    color: #333;
-}
-
-.dashboard-section p {
-    color: #555;
-}
-
-#error-message {
+    border: none;
+    outline: none;
+    margin-top: 1.5rem;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    margin-right: 1rem;
+  
+    /* Adjusted styles for better responsiveness */
+    padding: 7px;
+  }
+  
+  .search-btn {
+    background-color: aqua;
+    height: 34px;
+    width: 80px;
+    border: none;
+    font-weight: bold;
     color: #fff;
-    background-color: #e74c3c;
-    padding: 10px;
-    margin-bottom: 20px;
-    border-radius: 4px;
+    cursor: pointer;
+    font-family: monospace;
+  
+    /* Adjusted styles for better responsiveness */
+    height: 28px;
+    width: 65px;
+  }
+  
+  .search-btn:hover {
+    color: darkolivegreen;
+    transition: 800ms;
+  }
+  
+  .find-my-location-btn {
+    height: 32px;
+    padding: 0rem 1rem;
+    font-weight: 600;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    background-color: orange;
+    margin-top: 2.5rem;
+    color: #292626;
+    font-family: monospace;
+    opacity: 0.9;
+    cursor: pointer;
+  
+    /* Adjusted styles for better responsiveness */
+    height: 28px;
+    margin-top: 1rem;
+  }
+  
+  .find-my-location-btn:hover {
+    opacity: 1;
+  }
+  
+  /* Additional style for better spacing */
+  @media screen and (max-width: 767px) {
+    .search-bg-container {
+      padding: 1rem;
+    }
+  }
+  
+  
+  .content-bg-container {
+    background-color: rgb(0, 97, 100);
+  
+    /* Adjusted padding for better spacing */
+    padding: 1rem;
+  }
+  
+  .content-container {
+    width: 85%;
+    margin: auto;
+  }
+  
+  .content-heading {
+    color: #fff;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 23px;
+    margin-top: 0px;
+    padding-top: 15px;
+  }
+  
+  .activities-photography-travel-farming-container {
+    display: flex;
+  
+    /* Adjusted styles for better responsiveness */
+    flex-wrap: wrap;
+  }
+  
+  @media screen and (max-width: 767px) {
+    .activities-photography-travel-farming-container {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  
+  .activities-photography-container {
+    margin-right: 1.5rem;
+  }
+  
+  .description {
+    color: #dad4d4;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    line-height: 2;
+  }
+  
+  .last-description {
+    padding-bottom: 4rem;
+    margin: 0px;
+  }
+  /*========================= Footer container styles  =============================*/
+  /* Footer Container Styles */
+  
+  .footer-container {
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 200px;
+    width: 100%;
     text-align: center;
-}
+    opacity: 0.9;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .copy-right-description {
+    color: #fff;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 14px;
+    opacity: 1;
+    margin-top: 8rem;
+  }
+  
+  /* Explorer Container Styles */
+  
+  .explore-container {
+    background-color: #1e1f63;
+    padding: 3rem 4rem;
+  
+    /* Adjusted padding for better spacing */
+    @media screen and (max-width: 767px) {
+      padding: 1.5rem 2rem;
+    }
+  }
+  
+  .sunrise-sunset-heading {
+    margin: 0px;
+    color: #fff;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  
+    /* Adjusted font size for better readability on smaller screens */
+    @media screen and (min-width: 768px) {
+      font-size: 25px;
+    }
+  }
+  
+  .sunrise-sunset-description {
+    color: #00060f;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+  }
+  
+  .loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh;
+  }
+  
+  .sunrise-and-sunset-btn-container {
+    text-align: end;
+  }
+  
+  .btn {
+    height: 28px;
+    border: none;
+    margin-right: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  
+  .sunrise-btn {
+    background-color: orange;
+    opacity: 0.7;
+  }
+  
+  .sunrise-btn:hover {
+    opacity: 1;
+  }
+  
+  .sunset-btn {
+    background-color: black;
+    color: #fff;
+    opacity: 0.7;
+  }
+  
+  .sunset-btn:hover {
+    opacity: 1;
+  }
+  /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!! Sunrise and Sunset Containers Styeles!!!!!!!!!!!!!!!!!!!!!!!!!!! */
+  .sunrise-container {
+    margin-top: 3rem;
+  }
+  
+  @media screen and (max-width: 767px) {
+    .sunrise-container {
+      margin-top: 1rem;
+    }
+  }
+  
+  .background {
+    background: linear-gradient(
+        rgba(255, 255, 255, 0.1),
+        rgba(255, 255, 255, 0.1)
+      )
+  }
+  
+  .sunrise-background {
+    background: linear-gradient(
+        rgba(255, 255, 255, 0.2),
+        rgba(255, 255, 255, 0.2)
+      )
+  }
+  
+  .sunset-background {
+    background: linear-gradient(
+        rgba(255, 255, 255, 0.2),
+        rgba(255, 255, 255, 0.2)
+    )}
+  
+  .sunrise-content-container {
+    background-size: cover;
+    background-repeat: no-repeat;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+    margin-bottom: 0px;
+    border-radius: 10px;
+  }
+  
+  .day-heading {
+    color: #dad4d4;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 28px;
+    margin: 0px;
+    opacity: 1;
+  }
+  
+  @media screen and (max-width: 767px) {
+    .day-heading {
+      font-size: 22px;
+    }
+  }
+  
+  .date {
+    font-size: 12px;
+    font-weight: 800;
+    font-style: italic;
+    color: #d8dadc;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .sun-image {
+    width: 130px;
+  }
+  
+  .day-type-heading {
+    font-size: 24px;
+    margin: 0px;
+    margin-top: 20px;
+    font-weight: 800;
+    font-style: italic;
+    color: orange;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .day-type-time {
+    font-size: 24px;
+    margin: 0px;
+    font-weight: 800;
+    font-style: italic;
+    color: #fff;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .first-day-type-time {
+    font-size: 16px;
+    margin: 0px;
+    margin-top: 5px;
+    font-weight: 600;
+    font-style: italic;
+    color: #fff;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .day-type-description {
+    font-size: 16px;
+    margin-top: 35px;
+    font-weight: 600;
+    font-style: italic;
+    color: #d2cdcd;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+  }
+  
+  .day-length-solar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+  }
+  
+  .day-length {
+    font-size: 14px;
+    font-weight: 600;
+    font-style: italic;
+    color: orange;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+  }
+  
+  .solar-noon {
+    font-size: 14px;
+    font-weight: 600;
+    font-style: italic;
+    color: orange;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    text-align: center;
+  }
+  
+  .timezone {
+    align-self: flex-end;
+    font-size: 14px;
+    font-weight: 600;
+    font-style: italic;
+    color: orange;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    text-align: left;
+  }
+  
+  /* Functionality Style */
+  
+  .sunrise-main-container {
+    display: none;
+  }
+  
+  .sunset-main-container {
+    display: none;
+  }
